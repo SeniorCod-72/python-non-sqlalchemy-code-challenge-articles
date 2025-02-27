@@ -44,7 +44,13 @@ class Article:
         else:
             raise TypeError("the magazine must be an instance of the Magazine class")
            
-
+    def articles(self):
+        return self._articles
+    
+    
+    def articles(self, articles):
+        if isinstance(articles, Article):
+            self._articles = articles
 
     
 
@@ -65,39 +71,29 @@ class Article:
 class Author:
     def __init__(self, name):
         self.name = name
-        self._articles = []
+        self.new_articles = []
         self._magazines = []
-
 
     @property
     def name(self):
         return self._name
-    
-    
     @name.setter
     def name(self, name):
         if isinstance(name, str) and len(name) > 0 and not hasattr(self, "_name"):
             self._name = name
-            
-        
-   
-    # def articles(self):
-    #     return self._articles
-    
-    
-    # def articles(self, articles):
-    #     if isinstance(articles, Article):
-    #         self.articles = articles
 
-
+    def articles(self, articles):
+        if isinstance(articles, Article):
+            self._articles = articles
+    
+    def magazines(self, magazines):
+        if isinstance(magazines, Magazine):
+            self.magazines = magazines
+    
 
     def add_article(self, magazine, title):
         new_article = Article(self, magazine, title)
         self._articles.append(new_article)
-        self._magazines.append(magazine)
-        if magazine not in self._magazines:
-            self._magazines.append(magazine)
-            return new_article
 
 
     def topic_areas(self):
@@ -106,7 +102,7 @@ class Author:
         categories = {article.magazine.category for article in self._articles}
         return list(categories)
         
-        pass
+        
 
 
 
@@ -129,6 +125,7 @@ class Magazine:
     def __init__(self, name, category):
         self.name = name
         self.category = category
+        self.articles_list = []
 
     @property
     def name(self):
@@ -150,19 +147,22 @@ class Magazine:
             self._category = new_category
         pass
 
-    @property
-    def magazines(self):
-        return self._magazines
-    @magazines.setter
-    def magazines(self, magazines):
-       if isinstance(magazines, Magazine):
-        self._magazines = magazines
+    # @property
+    # def magazines(self):
+    #     return self._magazines
+    # @magazines.setter
+    # def magazines(self, magazines):
+    #    if isinstance(magazines, Magazine):
+    #     self._magazines = magazines
 
-    def articles(self):
+    def articles(self, articles):
+        if isinstance(articles, Article):
+            self._articles = articles
         
         pass
 
     def contributors(self):
+        return list(set([article.author for article in self.articles_list]))
         pass
 
     def article_titles(self):
